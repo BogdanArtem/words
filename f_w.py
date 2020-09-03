@@ -3,6 +3,7 @@ import sys
 from urllib.request import urlopen, urlretrieve
 import requests
 import json
+from credentials import api_key
 
 word = " ".join(str(arg) for arg in sys.argv[1:])
 path_to_save = '/Users/artembogdan/Downloads'
@@ -18,14 +19,14 @@ def get_ipa(word):
 
 
 def download_word(word, path):
-    frovo_url = f'https://apifree.forvo.com/key/bcfa84619ae534b16d2ae111d5dc9591/format/json/action/standard-pronunciation/word/{word}/language/fr'
+    frovo_url = f'https://apifree.forvo.com/key/{api_key}/format/json/action/standard-pronunciation/word/{word}/language/fr'
     response = requests.get(frovo_url)
     json_resp = response.json()
     try:
         download_from = json_resp['items'][0]['pathmp3']
     except IndexError:
         print('NO STANDART')
-        frovo_url = f'https://apifree.forvo.com/key/bcfa84619ae534b16d2ae111d5dc9591/format/json/action/word-pronunciations/word/{word}/language/fr'
+        frovo_url = f'https://apifree.forvo.com/key/{api_key}/format/json/action/word-pronunciations/word/{word}/language/fr'
         response = requests.get(frovo_url)
         json_resp = response.json()
         download_from = json_resp['items'][0]['pathmp3']
